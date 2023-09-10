@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/index.css" />
+    <link rel="icon" href="/logo.svg" />
+    <title>Net Gateway 主应用</title>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="headers">
+        <div class="title">
+          <div class="text">自定义请求头</div>
+        </div>
+
+        <div class="options">
+          <div class="item">
+            <input class="key-input" placeholder="请求头header key" value="jwt-key" />
+            <span class="dot">:</span>
+            <input class="value-input" placeholder="请求头header value" value="jwt-secret" />
+          </div>
+
+          <div class="item">
+            <input class="key-input" placeholder="请求头header key" value="" />
+            <span class="dot">:</span>
+            <input class="value-input" placeholder="请求头header value" value="" />
+          </div>
+
+          <div class="item">
+            <input class="key-input" placeholder="请求头header key" value="" />
+            <span class="dot">:</span>
+            <input class="value-input" placeholder="请求头header value" value="" />
+          </div>
+        </div>
+      </div>
+
+      <div class="visits">
+        <div class="title">
+          <div class="text">子应用列表</div>
+        </div>
+
+        <div class="options">
+          <div class="visit-app" visit-page="/_app_/child1/index.html">
+            <span style="font-size: 14px; color: #303133">应用1</span>
+            <br />
+            <span style="font-size: 13px; color: #909399">访问</span>
+          </div>
+
+          <div class="visit-app" visit-page="/_app_/child2/index.html">
+            <span style="font-size: 14px; color: #303133">应用2</span>
+            <br />
+            <span style="font-size: 13px; color: #909399">访问</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script type="module" src="/net-gateway-caller.js"></script>
+  <script type="module" src="/net-gateway-window.js"></script>
+  <script type="module" src="/index.js"></script>
+</html>
