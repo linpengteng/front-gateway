@@ -1,7 +1,7 @@
 {
   "name": "front-gateway",
   "description": "基于 Service Worker 实现前端类网关",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": "MIT",
   "author": "lin pengteng <china.linpengteng@gmail.com>",
   "keywords": [

@@ -69,7 +69,7 @@ const storager = (key, opts = {}) => {
   }
 }
 
-const clienter =  (key, opts = {}) => {
+const clienter = (key, opts = {}) => {
   switch (key) {
     case 'clear': {
       NetClients.clear()
@@ -156,7 +156,7 @@ const clienter =  (key, opts = {}) => {
   }
 }
 
-const register = (id, port) => {
+const register = (id, port = {}) => {
   if (NetClients.has(id)) {
     NetClients.get(id).port = port
   }
@@ -289,9 +289,9 @@ self.addEventListener('fetch', event => {
   let rewrite = '/'
 
   const request = event.request
-  const isNetPing = NetPing
-  const isDebugger = NetDebug
-  const isOnGateway = NetGateway
+  const isNetPing = NetPing === true
+  const isDebugger = NetDebug === true
+  const isOnGateway = NetGateway === true
   const isNewWindow = NewWindows.has(request.url)
   const isNavigated = request.mode === 'navigate'
   const isMatchWhited = NetWhites.some(regex => regex.test(request.url))
@@ -325,12 +325,12 @@ self.addEventListener('fetch', event => {
   if (isMatchRequest && isOnGateway) {
     const interceptor = async request => {
       const rewrite = NetClients.get(properClientId).rewrite
-      const newRoute = !isMatchWhited && !isMatchAppRoute ? request.url.replace(NetSubRewirte, `$1${rewrite}`) : request.url
+      const newRequestUrl = !isMatchAppRoute && !isMatchWhited ? request.url.replace(NetSubRewirte, `$1${rewrite}`) : request.url
       const newBufferBody = !/^(GET|HEAD)$/i.test(request.method) ? await request.clone().arrayBuffer().catch(() => null) : null
       const newParseBody = !/^(GET|HEAD)$/i.test(request.method) ? await request.clone().json().catch(() => null) : null
       const newHeaders = Object.fromEntries([...event.request.headers.entries(), ...NetCerters.entries()])
 
-      const newRequest = new Request(newRoute, {
+      const newRequest = new Request(newRequestUrl, {
         cache: request.cache,
         signal: request.signal,
         method: request.method,
@@ -430,14 +430,14 @@ self.addEventListener('fetch', event => {
           }
           
           /**
-           * Response exceptional
+           * Response Exception
            */
           if (response.ok !== true || response.status !== 200) {
             return response
           }
 
           /**
-           * Response injecting scripts
+           * Response Inject Scripts
            */
           if (isNavigated && isRewrited && isHtmlType && isNetPing) {
             const regexp = /(<\/head>)(?!.*<\/head>)/is
