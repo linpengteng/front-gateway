@@ -317,7 +317,7 @@ self.addEventListener('fetch', event => {
     clienter('checkup', [properClientId])
   }
 
-  if (isMatchRequest && isOnGateway && !isMatchAppRoute && isNavigated && rewrite !== '/') {
+  if (isMatchRequest && isOnGateway && isNavigated && !isMatchAppRoute && !isMatchWhited && rewrite !== '/') {
     return event.respondWith(Response.redirect(request.url.replace(NetSubRewirte, `$1${rewrite}`), 302))
   }
 
