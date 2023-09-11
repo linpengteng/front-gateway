@@ -23,6 +23,15 @@ const NetWhites = [
 
 
 /**
+ * 配置需要注入的脚本 - (仅在HTML页面导航访问,且NetPing开启时有效)
+ */
+const NetScripts = [
+  '<script type="text/javascript" src="/net-gateway-caller.js"><\/script>',
+  '<script type="text/javascript" src="/net-gateway-window.js"><\/script>'
+]
+
+
+/**
  * 配置子应用的请求
  * 
  *   eg. 子应用 http://localhost:5179/_app_/child1/index.html 请求，则相当于 child1 应用的 base 为 /_app_/child1
@@ -52,3 +61,9 @@ const NetGateway = true
  * 是否开启日志
  */
 const NetDebug = true
+
+
+/**
+ * 是否开启Ping
+ */
+const NetPing = true

@@ -289,6 +289,7 @@ self.addEventListener('fetch', event => {
   let rewrite = '/'
 
   const request = event.request
+  const isNetPing = NetPing
   const isDebugger = NetDebug
   const isOnGateway = NetGateway
   const isNewWindow = NewWindows.has(request.url)
@@ -365,6 +366,7 @@ self.addEventListener('fetch', event => {
       const responder = (client, response) => {
         const isWinClient = isWindowClient(client)
         const urlRedirect = response?.headers?.get('redirect-url')?.trim() || servicerClient?.redirect?.trim()
+        const isHtmlType = /(^|;)text\/html(;|$)/.test(response.headers.get("content-type"))
         const isManualed = newRequest.redirect === 'manual'
         const isRewrited = rewrite !== '/'
 
@@ -425,6 +427,33 @@ self.addEventListener('fetch', event => {
 
               return (NewWindows.add(url), client.navigate(url))
             }
+          }
+          
+          /**
+           * Response exceptional
+           */
+          if (response.ok !== true || response.status !== 200) {
+            return response
+          }
+
+          /**
+           * Response injecting scripts
+           */
+          if (isNavigated && isRewrited && isHtmlType && isNetPing) {
+            const regexp = /(<\/head>)(?!.*<\/head>)/is
+            const scripts = NetScripts.join('\n')
+
+            return response.text().then(res => 
+              new Response(res.replace(regexp, `${scripts}\n$1`), {
+                ok: response.ok,
+                url: response.url,
+                type: response.type,
+                status: response.status,
+                headers: response.headers,
+                redirected: response.redirected,
+                statusText: response.statusText
+              })
+            )
           }
 
           return response
