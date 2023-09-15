@@ -311,8 +311,8 @@ self.addEventListener('fetch', event => {
   }
 
   if (isMatchRequest && !NetClients.has(properClientId)) {
-    !isNewWindow && isNavigated && isMatchAppRefer && (rewrite = request.referrer.replace(NetSubRoute, '$1'))
-    !isNewWindow && isNavigated && isMatchAppRoute && (rewrite = request.url.replace(NetSubRoute, '$1'))
+    !isNewWindow && isMatchAppRefer && (rewrite = request.referrer.replace(NetSubRoute, '$1'))
+    !isNewWindow && isMatchAppRoute && (rewrite = request.url.replace(NetSubRoute, '$1'))
     NetClients.set(properClientId, { id: properClientId, rewrite: rewrite })
     clienter('synchrony', [properClientId])
     clienter('checkup', [properClientId])

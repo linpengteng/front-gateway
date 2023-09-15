@@ -6,6 +6,7 @@ module.exports = {
   globals: {
     ReadableStream: false,
     importScripts: false,
+    ServiceWorker: false,
     window: false,
     self: false
   },

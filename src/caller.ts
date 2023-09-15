@@ -33,7 +33,7 @@ const NetCaller = () => {
       const pinger = (port: MessagePort) => {
         window.clearTimeout(timer)
         const ping = messager('[CALL:NET_PING]', {})
-        const wait = new Promise(resolve => { timer = window.setTimeout(resolve, 10000) })
+        const wait = new Promise(resolve => { timer = window.setTimeout(resolve, 3000) })
         Promise.all([ping, wait]).then(() => { pinger(port) }).catch(() => { register(url) })
       }
 
@@ -78,10 +78,11 @@ const NetCaller = () => {
       }
 
       window.navigator.serviceWorker.oncontrollerchange = (event: any) => {
-        if (event.target?.controller?.postMessage) {
+        if (event.target?.controller instanceof ServiceWorker) {
           Queuer.get(0)?.resolve()
           Messager = new MessageChannel()
           event.target.controller.postMessage({ type: '[CHANNEL:TRANSFER]', certs: Object.fromEntries(Certer.entries()), clients: Object.fromEntries(Clients.entries()) }, [Messager.port2])
+          event.target.controller.onerror = () => register(url)
           listener(Messager.port1)
           pinger(Messager.port1)
         }
@@ -103,6 +104,7 @@ const NetCaller = () => {
             Queuer.get(0)?.resolve()
             Messager = new MessageChannel()
             registration.active.postMessage({ type: '[CHANNEL:TRANSFER]', certs: Object.fromEntries(Certer.entries()), clients: Object.fromEntries(Clients.entries()) }, [Messager.port2])
+            registration.active.onerror = () => register(url)
             prompter('[WORKER:ACTIVED]')
             listener(Messager.port1)
             pinger(Messager.port1)
